@@ -330,17 +330,17 @@ void initSkybox(){
 
 void drawSkybox(){
   glPushMatrix();
-  glTranslatef (0, 0, 50);
+  glTranslatef (0, 0, 100);
 
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D,skybox[4]);
   glColor3f(1.0,1.0,1.0);
   
-  glBegin(GL_POLYGON);//back
-  glTexCoord2f(1.0f,0.0f);  glVertex3f(100, 0, 0); 
-  glTexCoord2f(0.0f,0.0f);  glVertex3f(-100, 0, 0); 
-  glTexCoord2f(0.0f,1.0f);  glVertex3f(-100, 100, 0); 
-  glTexCoord2f(1.0f,1.0f);  glVertex3f(100, 100, 0); 
+    glBegin(GL_POLYGON);//back
+  glTexCoord2f(1.0f,0.0f);  glVertex3f(200, 0, 0); 
+  glTexCoord2f(0.0f,0.0f);  glVertex3f(-200, 0, 0); 
+  glTexCoord2f(0.0f,1.0f);  glVertex3f(-200, 200, 0); 
+  glTexCoord2f(1.0f,1.0f);  glVertex3f(200, 200, 0); 
   glEnd();
   
   glDisable(GL_TEXTURE_2D);
@@ -348,10 +348,10 @@ void drawSkybox(){
   glBindTexture(GL_TEXTURE_2D,skybox[2]);
   
   glBegin(GL_POLYGON);//top
-  glTexCoord2f(0.0,0.0);glVertex3f(100, 100, 0);
-  glTexCoord2f(1.0,0.0);glVertex3f(-100, 100, 0);
-  glTexCoord2f(1.0,1.0);glVertex3f(-100, 100, -100);
-  glTexCoord2f(0.0,1.0);glVertex3f(100, 100, -100);
+  glTexCoord2f(0.0f,0.0f);glVertex3f(200, 200, 0);
+  glTexCoord2f(1.0f,0.0f);glVertex3f(-200, 200, 0);
+  glTexCoord2f(1.0,1.0f);glVertex3f(-200, 200, -200);
+  glTexCoord2f(0.0,1.0);glVertex3f(200, 200, -200);
   glEnd();
 
   glDisable(GL_TEXTURE_2D);
@@ -359,10 +359,10 @@ void drawSkybox(){
   glBindTexture(GL_TEXTURE_2D,skybox[3]);
   
   glBegin(GL_POLYGON);
-  glTexCoord2f(0.0f,0.0f);  glVertex3f(-100, 0, -100);
-  glTexCoord2f(1.0f,0.0f);  glVertex3f(-100, 0, -0);
-  glTexCoord2f(1.0f,1.0f);  glVertex3f(-100, 100, -0);
-  glTexCoord2f(0.0f,1.0f);  glVertex3f(-100, 100, -100);
+  glTexCoord2f(0.0f,0.0f);  glVertex3f(-200, 0, -200);
+  glTexCoord2f(1.0f,0.0f);  glVertex3f(-200, 0, -0);
+  glTexCoord2f(1.0f,1.0f);  glVertex3f(-200, 200, -0);
+  glTexCoord2f(0.0f,1.0f);  glVertex3f(-200, 200, -200);
   glEnd();
   
   glDisable(GL_TEXTURE_2D);
@@ -370,10 +370,10 @@ void drawSkybox(){
   glBindTexture(GL_TEXTURE_2D,skybox[1]);
   
   glBegin(GL_POLYGON);
-  glTexCoord2f(1.0f,0.0f);glVertex3f(100, 0, -100);
-  glTexCoord2f(0.0f,0.0f);glVertex3f(100, 0, -0);
-  glTexCoord2f(0.0f,1.0f);glVertex3f(100, 100, -0);
-  glTexCoord2f(1.0f,1.0f);glVertex3f(100, 100, -100);
+  glTexCoord2f(1.0f,0.0f);glVertex3f(200, 0, -200);
+  glTexCoord2f(0.0f,0.0f);glVertex3f(200, 0, -0);
+  glTexCoord2f(0.0f,1.0f);glVertex3f(200, 200, -0);
+  glTexCoord2f(1.0f,1.0f);glVertex3f(200, 200, -200);
   glEnd();
 
   glDisable(GL_TEXTURE_2D);
@@ -381,10 +381,10 @@ void drawSkybox(){
   glBindTexture(GL_TEXTURE_2D,skybox[6]);
   
   glBegin(GL_POLYGON);
-  glTexCoord2f(0.0f,0.0f);glVertex3f(100, 0, 0);
-  glTexCoord2f(0.0f,1.0f);glVertex3f(-100, 0, 0);
-  glTexCoord2f(1.0f,1.0f);glVertex3f(-100, 0, -100);
-  glTexCoord2f(1.0f,0.0f);glVertex3f(100, 0, -100);
+  glTexCoord2f(0.0f,0.0f);glVertex3f(200, 0, 0);
+  glTexCoord2f(0.0f,1.0f);glVertex3f(-200, 0, 0);
+  glTexCoord2f(1.0f,1.0f);glVertex3f(-200, 0, -200);
+  glTexCoord2f(1.0f,0.0f);glVertex3f(200, 0, -200);
   glEnd();
   
   glDisable(GL_TEXTURE_2D);
@@ -392,19 +392,16 @@ void drawSkybox(){
   glBindTexture(GL_TEXTURE_2D,skybox[5]);
   
   glBegin(GL_POLYGON);
-  glTexCoord2f(1.0f,0.0f);  glVertex3f(100, 0, -100); 
-  glTexCoord2f(0.0f,0.0f);  glVertex3f(-100, 0, -100); 
-  glTexCoord2f(0.0f,1.0f);  glVertex3f(-100, 100, -100); 
-  glTexCoord2f(1.0f,1.0f);  glVertex3f(100, 100, -100); 
+  glTexCoord2f(1.0f,0.0f);  glVertex3f(200, 0, -200); 
+  glTexCoord2f(0.0f,0.0f);  glVertex3f(-200, 0, -200); 
+  glTexCoord2f(0.0f,1.0f);  glVertex3f(-200, 200, -200); 
+  glTexCoord2f(1.0f,1.0f);  glVertex3f(200, 200, -200); 
   glEnd();
-  glDisable(GL_TEXTURE_2D);
-
-  
+	glDisable(GL_TEXTURE_2D);
   
   glPopMatrix();
 
 }
-
 
 void drawBall()
 {

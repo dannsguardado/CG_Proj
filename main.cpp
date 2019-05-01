@@ -56,15 +56,15 @@ static GLfloat vertices[]={
     -5, 2, 0,
     -5, 2, -5,
     5, 2, -5,
-    
-    -5, 0.0, -5,
-    -5, 0.0, -0.0,
-    -5, 2, -0.0,
+       
+ 	-5, 0, -5,
+    -5, 0, -0,
+    -5, 2, -0,
     -5, 2, -5,
     
-    5, 0.0, -5,
-    5, 0.0, -0.0,
-    5, 2, -0.0,
+    5, 0, -5,
+    5, 0, -0,
+    5, 2, -0,
     5, 2, -5,
     
     5, 0, 0,
@@ -133,6 +133,7 @@ GLUquadricObj*  bola = gluNewQuadric ( );
 
 //------------------------------------------------------------ Texturas
 GLuint   texture[5];
+GLuint skybox[7];
 RgbImage imag;
 static GLfloat arrayTexture[]={
     0,0, 1,0, 1,1, 0,1, 0,0, 1,0, 1,1, 0,1, 0,0, 1,0, 1,1, 0,1, 0,0, 1,0, 1,1, 0,1, 0,0, 1,0, 1,1, 0,1, 0,0, 1,0, 1,1, 0,1, 0,0, 1,0, 1,1, 0,1, 0,0, 1,0, 1,1, 0,1,  0,0, 1,0, 1,1, 0,1, 0,0, 1,0, 1,1, 0,1, 0,0, 1,0, 1,1, 0,1, 0,0, 1,0, 1,1, 0,1, 0,0, 1,0, 1,1, 0,1
@@ -189,64 +190,244 @@ void initTexturas()
                  imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
                  imag.ImageData());
 				
-    
-    glGenTextures(1, &texture[1]);
-    glBindTexture(GL_TEXTURE_2D, texture[1]);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/textures/brick.bmp");
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3,
-                 imag.GetNumCols(),
-                 imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
-                 imag.ImageData());
-    
-    glGenTextures(1, &texture[2]);
-    glBindTexture(GL_TEXTURE_2D, texture[2]);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/textures/pedra.bmp");
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3,
-                 imag.GetNumCols(),
-                 imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
-                 imag.ImageData());
-    
-    glGenTextures(1, &texture[3]);
-    glBindTexture(GL_TEXTURE_2D, texture[3]);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/textures/Grass01.bmp");
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3,
-                 imag.GetNumCols(),
-                 imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
-                 imag.ImageData());
-    
-    glGenTextures(1, &texture[4]);
-    glBindTexture(GL_TEXTURE_2D, texture[4]);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/textures/brick.bmp");
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3,
-                 imag.GetNumCols(),
-                 imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
-                 imag.ImageData());
-    
+	
+	glGenTextures(1, &texture[1]);
+	glBindTexture(GL_TEXTURE_2D, texture[1]);
+	imag.LoadBmpFile("textures/brick.bmp");
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());  	
+		
+	glGenTextures(1, &texture[2]);
+	glBindTexture(GL_TEXTURE_2D, texture[2]);
+	imag.LoadBmpFile("textures/pedra.bmp");
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());  
+		
+	glGenTextures(1, &texture[3]);
+	glBindTexture(GL_TEXTURE_2D, texture[3]);
+	imag.LoadBmpFile("textures/Grass01.bmp");
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());  	
+	
+	glGenTextures(1, &texture[4]);
+	glBindTexture(GL_TEXTURE_2D, texture[4]);
+	imag.LoadBmpFile("textures/brick.bmp");
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());  
+		
+		
+		
+		////////////////////////skybox
+		
+}
+
+void initSkybox(){
+	
+  //skybox bottom
+	glGenTextures(1, &skybox[0]);
+	glBindTexture(GL_TEXTURE_2D, skybox[0]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	imag.LoadBmpFile("skybox/floor.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
+
+	//skybox top
+	glGenTextures(1, &skybox[1]);
+	glBindTexture(GL_TEXTURE_2D, skybox[1]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	imag.LoadBmpFile("skybox/left.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
+
+	//skybox right
+	glGenTextures(1, &skybox[2]);
+	glBindTexture(GL_TEXTURE_2D, skybox[2]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	imag.LoadBmpFile("skybox/sky.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
+
+	//skybox left
+	glGenTextures(1, &skybox[3]);
+	glBindTexture(GL_TEXTURE_2D, skybox[3]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	imag.LoadBmpFile("skybox/front.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
+
+	//skybox front
+	glGenTextures(1, &skybox[4]);
+	glBindTexture(GL_TEXTURE_2D, skybox[4]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	imag.LoadBmpFile("skybox/back.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
+
+	//skybox back
+	glGenTextures(1, &skybox[5]);
+	glBindTexture(GL_TEXTURE_2D, skybox[5]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	imag.LoadBmpFile("skybox/right.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
+	
+	
+	glGenTextures(1, &skybox[6]);
+	glBindTexture(GL_TEXTURE_2D, skybox[6]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	imag.LoadBmpFile("skybox/floor.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
+
 }
 
 //================================================================================
 //================== OBJECTOS
 //================================================================================
+
+void drawSkybox(){
+  glPushMatrix();
+  glTranslatef (0, 0, 100);
+
+  glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D,skybox[4]);
+  glColor3f(1.0,1.0,1.0);
+  
+    glBegin(GL_POLYGON);//back
+  glTexCoord2f(1.0f,0.0f);  glVertex3f(200, 0, 0); 
+  glTexCoord2f(0.0f,0.0f);  glVertex3f(-200, 0, 0); 
+  glTexCoord2f(0.0f,1.0f);  glVertex3f(-200, 200, 0); 
+  glTexCoord2f(1.0f,1.0f);  glVertex3f(200, 200, 0); 
+  glEnd();
+  
+  glDisable(GL_TEXTURE_2D);
+  glEnable(GL_TEXTURE_2D);  
+  glBindTexture(GL_TEXTURE_2D,skybox[2]);
+  
+  glBegin(GL_POLYGON);//top
+  glTexCoord2f(0.0f,0.0f);glVertex3f(200, 200, 0);
+  glTexCoord2f(1.0f,0.0f);glVertex3f(-200, 200, 0);
+  glTexCoord2f(1.0,1.0f);glVertex3f(-200, 200, -200);
+  glTexCoord2f(0.0,1.0);glVertex3f(200, 200, -200);
+  glEnd();
+
+  glDisable(GL_TEXTURE_2D);
+  glEnable(GL_TEXTURE_2D);  
+  glBindTexture(GL_TEXTURE_2D,skybox[3]);
+  
+  glBegin(GL_POLYGON);
+  glTexCoord2f(0.0f,0.0f);  glVertex3f(-200, 0, -200);
+  glTexCoord2f(1.0f,0.0f);  glVertex3f(-200, 0, 0);
+  glTexCoord2f(1.0f,1.0f);  glVertex3f(-200, 200, 0);
+  glTexCoord2f(0.0f,1.0f);  glVertex3f(-200, 200, -200);
+  glEnd();
+  
+  glDisable(GL_TEXTURE_2D);
+  glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D,skybox[1]);
+  
+  glBegin(GL_POLYGON);
+  glTexCoord2f(1.0f,0.0f);glVertex3f(200, 0, -200);
+  glTexCoord2f(0.0f,0.0f);glVertex3f(200, 0, 0);
+  glTexCoord2f(0.0f,1.0f);glVertex3f(200, 200, 0);
+  glTexCoord2f(1.0f,1.0f);glVertex3f(200, 200, -200);
+  glEnd();
+
+  glDisable(GL_TEXTURE_2D);
+  glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D,skybox[6]);
+  
+  glBegin(GL_POLYGON);
+  glTexCoord2f(0.0f,0.0f);glVertex3f(200, 0, 0);
+  glTexCoord2f(0.0f,1.0f);glVertex3f(-200, 0, 0);
+  glTexCoord2f(1.0f,1.0f);glVertex3f(-200, 0, -200);
+  glTexCoord2f(1.0f,0.0f);glVertex3f(200, 0, -200);
+  glEnd();
+  
+  glDisable(GL_TEXTURE_2D);
+  glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D,skybox[5]);
+  
+  glBegin(GL_POLYGON);
+  glTexCoord2f(1.0f,0.0f);  glVertex3f(200, 0, -200); 
+  glTexCoord2f(0.0f,0.0f);  glVertex3f(-200, 0, -200); 
+  glTexCoord2f(0.0f,1.0f);  glVertex3f(-200, 200, -200); 
+  glTexCoord2f(1.0f,1.0f);  glVertex3f(200, 200, -200); 
+  glEnd();
+	glDisable(GL_TEXTURE_2D);
+  
+  glPopMatrix();
+}
 
 void drawChao(){
     
@@ -266,7 +447,6 @@ void drawChao(){
     
     glDisable(GL_TEXTURE_2D);
 }
-
 
 void drawBall()
 {
@@ -301,6 +481,38 @@ void drawEscada()
     glEnable(GL_TEXTURE_2D);
     
     for(int k=0 ; k<lancesESC; k++){
+    	for(int j=0; j<numDegraus[k]; j++){
+    		for( int p = 0; p < facesESC; p++ ){
+				if (p == 1)
+					glBindTexture(GL_TEXTURE_2D,texture[1]);
+				else if (p == 2)
+					glBindTexture(GL_TEXTURE_2D,texture[2]);
+				else
+					glBindTexture(GL_TEXTURE_2D,texture[3]);
+		    		
+		    	
+        		poligono[0]= p*4+0;
+        		poligono[1]= p*4+1 ;
+        		poligono[2]= p*4+2 ;
+        		poligono[3]= p*4+3 ;
+        		glDrawElements(GL_POLYGON, 4, GL_UNSIGNED_INT, poligono);
+    		}
+    		//parede
+    		
+    		glDrawElements(GL_POLYGON, 4, GL_UNSIGNED_INT, poligono);
+    		
+        	glTranslatef ( 0, 2, -5);
+ 
+    	}
+    	glBindTexture(GL_TEXTURE_2D,texture[4]);
+    	poligono[0]= 4*4+0;
+        		poligono[1]= 4*4+1 ;
+        		poligono[2]= 4*4+2 ;
+        		poligono[3]= 4*4+3 ;
+    	glDrawElements(GL_POLYGON, 4, GL_UNSIGNED_INT, poligono);
+   
+    glTranslatef(-5, 0,0);
+    glRotatef(90, 0, 1, 0);
         for(int j=0; j<numDegraus[k]; j++){
             for( int p = 0; p < facesESC; p++ ){
                 if (p == 1)
@@ -355,8 +567,7 @@ void drawEscada()
 void init(void) {
     glClearColor(WHITE);
     glShadeModel(GL_SMOOTH);
-    
-    
+    initSkybox();
     initTexturas();
     glEnable(GL_DEPTH_TEST);
     
@@ -397,8 +608,9 @@ void display(void){
     glLoadIdentity();
     gluLookAt(obsPini[0], obsPini[1]+5.5, obsPini[2], obsPfin[0], obsPfin[1], obsPfin[2], 0, 1, 0);
     
+    drawSkybox();
     drawBall();
-    drawChao();
+    //drawChao();    
     drawEscada();
     
     glutSwapBuffers();

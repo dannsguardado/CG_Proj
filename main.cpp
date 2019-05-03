@@ -1,8 +1,8 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <windows.h>
-#include <GL\gl.h>
+#include <GLUT/GLUT.h>
+#include <OpenGl/gl.h>
 #include <cstdlib>
 #include <time.h>
 #include "variables.h"
@@ -141,13 +141,11 @@ static GLfloat arrayTexture[]={
 void initLight(){
     GLfloat corDifusa [ ] ={0.0,0.4,1.0,0.0};
     /*// glLightfv(GL_LIGHT0, GL_POSITION,Posicao );
-     // glLightfv(GL_LIGHT0, GL_AMBIENT,CorAmbiente );
-     glLightfv(GL_LIGHT0, GL_DIFFUSE,   corDifusa );
-     
-     //  glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION,atQuadr );
-     glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION,4 ) ;
-     //glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION,atConst );
-     glEnable(GL_LIGHT0);*/
+     // glLightfv(GL_LIGHT0, GL_AMBIENT,CorAmbiente );*/
+    
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT1);
+    glEnable(GL_LIGHT0);
     
     
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -161,8 +159,8 @@ void initLight(){
     glLightfv(GL_LIGHT1, GL_AMBIENT, whitePlasticAmb);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, whitePlasticDif);
     glLightfv(GL_LIGHT1, GL_SPECULAR, whitePlasticSpec);
-    glEnable(GL_LIGHT1);
-    glEnable(GL_LIGHTING);
+    glLightfv(GL_LIGHT1, GL_POSITION, obsPfin);
+    
     glFrontFace(GL_CCW);
     glShadeModel(GL_SMOOTH);
     
@@ -178,7 +176,7 @@ void initTexturas()
     glGenTextures(1, &texture[0]);
     glBindTexture(GL_TEXTURE_2D, texture[0]);
     imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/textures/Grass01.bmp");
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -193,7 +191,7 @@ void initTexturas()
     glGenTextures(1, &texture[1]);
     glBindTexture(GL_TEXTURE_2D, texture[1]);
     imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/textures/brick.bmp");
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -206,7 +204,7 @@ void initTexturas()
     glGenTextures(1, &texture[2]);
     glBindTexture(GL_TEXTURE_2D, texture[2]);
     imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/textures/pedra.bmp");
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -219,7 +217,7 @@ void initTexturas()
     glGenTextures(1, &texture[3]);
     glBindTexture(GL_TEXTURE_2D, texture[3]);
     imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/textures/Grass01.bmp");
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -232,7 +230,7 @@ void initTexturas()
     glGenTextures(1, &texture[4]);
     glBindTexture(GL_TEXTURE_2D, texture[4]);
     imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/textures/brick.bmp");
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -241,7 +239,12 @@ void initTexturas()
                  imag.GetNumCols(),
                  imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
                  imag.ImageData());
-    
+    // Enable color material mode:
+    // The ambient and diffuse color of the front faces will track the color set by glColor().
+    glEnable(GL_BLEND); // Enable blending.
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 }
 
 //================================================================================
@@ -253,14 +256,18 @@ void drawChao(){
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D,texture[0]);
     
+    glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, greenRubberAmb);
+    glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE, greenRubberDif);
+    glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR, greenRubberSpec);
     glPushMatrix();
+    
     glColor4f(LARANJA);
     glTranslatef(0,-5,0);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex3i( -xC,  0, -xC );
-    glTexCoord2f(30.0f, 0.0f); glVertex3i( -xC,   0,  xC );
-    glTexCoord2f(30.0f, 30.0f); glVertex3i(  xC,   0,  xC);
-    glTexCoord2f(0.0f, 30.0f); glVertex3i(  xC,     0,  -xC);
+    glTexCoord2f(0.0f, 0.0f); glVertex3i( -xC,  0, -xC );glNormal3fv(normais);
+    glTexCoord2f(30.0f, 0.0f); glVertex3i( -xC,   0,  xC );glNormal3fv(normais);
+    glTexCoord2f(30.0f, 30.0f); glVertex3i(  xC,   0,  xC);glNormal3fv(normais);
+    glTexCoord2f(0.0f, 30.0f); glVertex3i(  xC,     0,  -xC);glNormal3fv(normais);
     glEnd();
     glPopMatrix();
     
@@ -270,17 +277,17 @@ void drawChao(){
 
 void drawBall()
 {
-    GLfloat no_mat[] = {0.0, 0.0, 0.0, 1.0};
-    GLfloat mat_ambient[] = { 1, 0.5, 0, 1.0 };
+    GLfloat no_mat[] = {0.6, 0.5, 0.6, 1.0};
+    GLfloat mat_ambient[] = { 0.4, 0.5, 0, 1.0 };
     GLfloat mat_diffuse[] = { 0.4, 0.2, 0, 1.0 };
     GLfloat mat_specular[] = { 0.774597, 0.774597, 0.774597, 1.0 };
     GLfloat mat_shine = 0.6;
     
-    glMaterialfv (GL_FRONT, GL_AMBIENT, whitePlasticAmb);
-    glMaterialfv (GL_FRONT, GL_DIFFUSE, whitePlasticDif);
-    glMaterialfv (GL_FRONT, GL_SPECULAR, whitePlasticSpec);
-    glMaterialf (GL_FRONT, GL_SHININESS, mat_shine * 128);
-    glMaterialfv(GL_FRONT, GL_EMISSION, no_mat);
+    glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, whitePlasticAmb);
+    glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE, whitePlasticDif);
+    glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR, whitePlasticSpec);
+    glMaterialf (GL_FRONT_AND_BACK, GL_SHININESS, mat_shine * 128);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, no_mat);
     
     glPushMatrix();
     glTranslatef (obsPfin[0], obsPfin[1], obsPfin[2]);
@@ -310,7 +317,6 @@ void drawEscada()
                 else
                     glBindTexture(GL_TEXTURE_2D,texture[2]);
                 
-                
                 poligono[0]= p*4+0;
                 poligono[1]= p*4+1 ;
                 poligono[2]= p*4+2 ;
@@ -326,7 +332,6 @@ void drawEscada()
                 glEnableClientState(GL_VERTEX_ARRAY);
                 
                 glEnableClientState(GL_NORMAL_ARRAY);
-                // glDisableClientState(GL_NORMAL_ARRAY);
                 
                 glVertexPointer(3,GL_FLOAT,0,vertices);
                 glNormalPointer(GL_FLOAT,0,normais);

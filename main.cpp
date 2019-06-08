@@ -41,6 +41,7 @@ bool luzBola = true;
 int lancesESC = 8;
 
 int numDegraus[8];
+GLboolean fog = false;
 
 int  facesESC   = 6;
 int  degrausESC= 3;
@@ -638,6 +639,17 @@ void init(void) {
     initLight();
     //glLightModel(GL_LIGHT_MODEL_AMBIENT, {0.5, 0.8, 0.3});
     
+ 
+}
+
+void drawFog(){
+  GLfloat colorN[3] = {0.8,0.8,0.8};
+  glFogfv(GL_FOG_COLOR, colorN); //Cor do nevoeiro
+  glFogi(GL_FOG_MODE, GL_EXP); //Equa‹o do nevoeiro - linear
+  glFogf(GL_FOG_START, 40.0); // Dist‰ncia a que ter‡ in’cio o nevoeiro
+  glFogf(GL_FOG_END, 60.0); // Dist‰ncia a que o nevoeiro terminar‡
+  glFogf (GL_FOG_DENSITY, 0.02);
+ 
 }
 
 GLvoid resize(GLsizei width, GLsizei height)
@@ -663,7 +675,7 @@ void display(void){
     drawLights(50, 20);
     //drawChao();    
     drawEscada();
-    
+    drawFog();
     glutSwapBuffers();
     
 }
@@ -687,8 +699,9 @@ void updateVisaoSubida(){
 
 //======================================================= EVENTOS
 void keyboard(unsigned char key, int x, int y){
+	printf("tecla %d\n", key);
     switch (key) {
-        case 97:
+    	case 97:
             aVisao+=PI/2;
             updateVisao(1);
             break;
@@ -729,10 +742,16 @@ void keyboard(unsigned char key, int x, int y){
             glutPostRedisplay();
             break;
             //--------------------------- Escape
-        case 27:
+        case 102:
+        	fog = !fog;
+        	 if(fog)glEnable(GL_FOG);
+  else glDisable(GL_FOG);
+        	glutPostRedisplay();
+			break;
+		case 27:
             exit(0);
             break;
-            
+        
     }
 }
 
@@ -829,6 +848,7 @@ void initializeRandomVariables(){
     //	printf("%d", numDegraus[i]);
     //}
 }
+// ===================================================== sistema de particulas
 
 
 

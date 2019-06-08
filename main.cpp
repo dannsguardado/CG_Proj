@@ -1,11 +1,12 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <GLUT/GLUT.h>
-#include <OpenGl/gl.h>
+#include <windows.h>
+#include <GL\gl.h>
 #include <cstdlib>
 #include <time.h>
 #include "variables.h"
+
 
 
 //==================================================================== Definir cores
@@ -198,7 +199,7 @@ void initTexturas()
     //----------------------------------------- Chao
     glGenTextures(1, &texture[0]);
     glBindTexture(GL_TEXTURE_2D, texture[0]);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/textures/Grass01.bmp");
+    imag.LoadBmpFile("textures/Grass01.bmp");
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -212,7 +213,7 @@ void initTexturas()
     
     glGenTextures(1, &texture[1]);
     glBindTexture(GL_TEXTURE_2D, texture[1]);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/textures/brick.bmp");
+    imag.LoadBmpFile("textures/brick.bmp");
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -225,7 +226,7 @@ void initTexturas()
     
     glGenTextures(1, &texture[2]);
     glBindTexture(GL_TEXTURE_2D, texture[2]);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/textures/pedra.bmp");
+    imag.LoadBmpFile("textures/pedra.bmp");
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -238,7 +239,7 @@ void initTexturas()
     
     glGenTextures(1, &texture[3]);
     glBindTexture(GL_TEXTURE_2D, texture[3]);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/textures/Grass01.bmp");
+    imag.LoadBmpFile("textures/Grass01.bmp");
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -251,7 +252,7 @@ void initTexturas()
     
     glGenTextures(1, &texture[4]);
     glBindTexture(GL_TEXTURE_2D, texture[4]);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/textures/brick.bmp");
+    imag.LoadBmpFile("textures/brick.bmp");
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -281,7 +282,7 @@ void initSkybox(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/skybox/floor.bmp");
+    imag.LoadBmpFile("skybox/floor.bmp");
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
                  imag.GetNumCols(),
                  imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
@@ -295,7 +296,7 @@ void initSkybox(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/skybox/left.bmp");
+    imag.LoadBmpFile("skybox/left.bmp");
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
                  imag.GetNumCols(),
                  imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
@@ -309,7 +310,7 @@ void initSkybox(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/skybox/sky.bmp");
+    imag.LoadBmpFile("skybox/sky.bmp");
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
                  imag.GetNumCols(),
                  imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
@@ -323,7 +324,7 @@ void initSkybox(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/skybox/front.bmp");
+    imag.LoadBmpFile("skybox/front.bmp");
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
                  imag.GetNumCols(),
                  imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
@@ -337,7 +338,7 @@ void initSkybox(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/skybox/back.bmp");
+    imag.LoadBmpFile("skybox/back.bmp");
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
                  imag.GetNumCols(),
                  imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
@@ -351,7 +352,7 @@ void initSkybox(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/skybox/right.bmp");
+    imag.LoadBmpFile("skybox/right.bmp");
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
                  imag.GetNumCols(),
                  imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
@@ -365,7 +366,7 @@ void initSkybox(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    imag.LoadBmpFile("/Users/tiagorodrigues/Desktop/Filipa/EscadasMaximo/EscadasMaximo/skybox/floor.bmp");
+    imag.LoadBmpFile("skybox/floor.bmp");
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
                  imag.GetNumCols(),
                  imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,

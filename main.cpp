@@ -488,6 +488,30 @@ void drawBall()
     
     
 }
+
+void drawLights(int x, int z){
+  
+  glPushMatrix();
+  glTranslatef(x, 0, z);
+
+  glColor4f(1.0,1.0,0.0,1.0);
+  //glRotatef(-90,1,0,0);
+  
+  GLUquadric *quadric;
+  quadric = gluNewQuadric();
+  gluQuadricNormals(quadric, GLU_SMOOTH);
+  
+  gluCylinder(quadric,0.05,0.05,5,50,50);
+
+  //glTranslatef(0,5,0);
+  
+  //gluCylinder(quadric,0.05,0.05,5,50,50);
+
+  glPopMatrix();
+
+
+}
+
 void drawEscada()
 {
     GLfloat cor [] = {0.0,0.0,0.0,1.0};
@@ -618,13 +642,14 @@ void display(void){
     glViewport (0, 0, wScreen, hScreen);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(angPersp, (float)wScreen/hScreen, 0.1, 100.0);
+    gluPerspective(angPersp, (float)wScreen/hScreen, 0.1, 1000.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(obsPini[0], obsPini[1]+5.5, obsPini[2], obsPfin[0], obsPfin[1], obsPfin[2], 0, 1, 0);
     
     drawSkybox();
     drawBall();
+    drawLights(50, 20);
     //drawChao();    
     drawEscada();
     

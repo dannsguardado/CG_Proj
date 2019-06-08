@@ -27,6 +27,20 @@
 //================================================================================
 //===========================================================Variaveis e constantes
 
+#define MAX_PARTICULAS 10000
+#define frand()			((float)rand()/RAND_MAX)
+
+typedef struct {
+	float   size;		// tamanho
+	float	life;		// vida
+	float	fade;		// fade
+	GLfloat x, y, z;    // posicao
+	GLfloat vx, vy, vz; // velocidade 
+} Particle;
+
+Particle  particula1[MAX_PARTICULAS];
+GLfloat whiteDif[] = { 0.75 ,0.75 ,0.75 };
+
 //------------------------------------------------------------ Sistema Coordenadas
 GLfloat  xC=50.0, zC=50.0;
 GLint    wScreen=800, hScreen=500;
@@ -42,6 +56,10 @@ int lancesESC = 8;
 
 int numDegraus[8];
 GLboolean fog = false;
+
+
+
+extern Particle  particula1[MAX_PARTICULAS];
 
 int  facesESC   = 6;
 int  degrausESC= 3;
@@ -498,9 +516,7 @@ void drawBall()
     glNormal3f(0,0,1);
     
     glutSolidSphere(2, 10, 10);
-    glPopMatrix();
-    
-    
+    glPopMatrix();  
 }
 
 void drawLights(int x, int z){
@@ -620,6 +636,7 @@ void init(void) {
     glShadeModel(GL_SMOOTH);
     initSkybox();
     initTexturas();
+    
     glEnable(GL_DEPTH_TEST);
     
     //------------------------------- ESCADA
@@ -642,6 +659,7 @@ void init(void) {
  
 }
 
+// ===================================================== sistema de particulas
 void drawFog(){
   GLfloat colorN[3] = {0.8,0.8,0.8};
   glFogfv(GL_FOG_COLOR, colorN); //Cor do nevoeiro
@@ -651,6 +669,94 @@ void drawFog(){
   glFogf (GL_FOG_DENSITY, 0.02);
  
 }
+
+
+
+
+
+void showParticulas(Particle *particula, GLfloat px, GLfloat py, GLfloat pz) {
+	int i;
+	int numero;
+	GLfloat v;
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture[3]);
+
+	numero = (int)(frand()*10.0);
+	
+	for (i = 0; i < MAX_PARTICULAS; i++) {
+		if (particula[i].life > 0 && (particula[i].x < px + 11 && particula[i].x > px - 4)) {
+
+			glBegin(GL_QUADS);
+			glTexCoord2d(0, 0); glVertex3f(particula[i].x - particula[i].size, particula[i].y - particula[i].size, particula[i].z);
+			glTexCoord2d(0, 1); glVertex3f(particula[i].x - particula[i].size, particula[i].y + particula[i].size, particula[i].z);
+			glTexCoord2d(1, 1); glVertex3f(particula[i].x + particula[i].size, particula[i].y + particula[i].size, particula[i].z);
+			glTexCoord2d(1, 0); glVertex3f(particula[i].x + particula[i].size, particula[i].y - particula[i].size, particula[i].z);
+			glEnd();
+			particula[i].x += particula[i].vx;
+			particula[i].y += particula[i].vy;
+
+			particula[i].vx /= (particula[i].y) * 5;
+			
+			if (particula[i].vx > 1) {
+				particula[i].vx = 0.01;
+			}
+			else if (particula[i].vx < -1) {
+				particula[i].vx = -0.01;
+			}
+
+			particula[i].life -= particula[i].fade;
+		}
+		else {
+			v = frand() + 0.02;
+
+			particula[i].x = px + 0.1*frand()*px;   
+			particula[i].y = py + 0.1*frand()*py;
+			particula[i].z = pz + frand();	
+
+			if (particula[i].x > 0.1 * 0.5 * px + px) {
+				particula[i].vx = v * -frand() * (particula[i].x - (0.1 * 0.5 * px + px)) * 0.025;//.025;
+			}
+			else {
+				particula[i].vx = v * frand() * (0.1 * 0.5 * px + px - particula[i].x) * 0.025;//.025;
+			}
+
+			particula[i].vy = v * 0.05;
+
+
+			particula[i].life = 1.0f;
+			particula[i].fade = frand() * .01f + .005;	// Em 100=1/0.01 iteracoes desaparece
+		}
+	}
+
+	glDisable(GL_TEXTURE_2D);
+}
+
+void drawFireplace(GLfloat posX, GLfloat posY, GLfloat posZ) {
+	printf("draw the fire");
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, whiteDif);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDif);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, whiteDif);
+	showParticulas(particula1, posX + 7.5, posY, posZ + 2.5);
+	glDisable(GL_BLEND);
+	
+}
+
+void iniParticulas(Particle *particula) {
+	GLfloat v;
+	int i;
+	GLfloat ps;
+	ps = 0.1;
+	printf("init particles");
+	for (i = 0; i<MAX_PARTICULAS; i++) {
+		particula[i].size = ps;		// tamanh de cada particula
+
+		particula[i].life = 0;
+	}
+}
+
 
 GLvoid resize(GLsizei width, GLsizei height)
 {
@@ -676,6 +782,7 @@ void display(void){
     //drawChao();    
     drawEscada();
     drawFog();
+	drawFireplace(10, 0, 0);
     glutSwapBuffers();
     
 }
@@ -744,10 +851,12 @@ void keyboard(unsigned char key, int x, int y){
             //--------------------------- Escape
         case 102:
         	fog = !fog;
-        	 if(fog)glEnable(GL_FOG);
-  else glDisable(GL_FOG);
-        	glutPostRedisplay();
+        	if(fog)glEnable(GL_FOG);
+ 			else glDisable(GL_FOG);
 			break;
+		case 103:
+			iniParticulas(particula1);				
+			break;						
 		case 27:
             exit(0);
             break;
@@ -848,7 +957,6 @@ void initializeRandomVariables(){
     //	printf("%d", numDegraus[i]);
     //}
 }
-// ===================================================== sistema de particulas
 
 
 
@@ -868,7 +976,5 @@ int main(int argc, char** argv){
     glutSpecialFunc(teclasNotAscii);
     
     glutMainLoop();
-    
-    return 0;
+ 	return 0;   
 }
-

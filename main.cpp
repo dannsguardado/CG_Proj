@@ -32,7 +32,7 @@ GLint    wScreen=800, hScreen=500;
 GLfloat obsPY =1.0;
 //------------------------------------------------------------ Observador
 GLfloat  rVisao=3.8, aVisao=0.5*PI, incVisao=0.1;
-GLfloat  angPersp=129.0;
+GLfloat  angPersp=100.0;
 GLfloat  obsPini[] ={1, obsPY, (GLfloat)0.5*xC};
 GLfloat  obsPfin[] ={(GLfloat)(obsPini[0]-rVisao*cos(aVisao)), obsPini[1], (GLfloat)(obsPini[2]-rVisao*sin(aVisao))};
 bool luzLigada = true;
@@ -159,7 +159,7 @@ void initLight(){
     GLfloat ambientLight[] = {0.2f, 0.2f, 0.2f, 1.0f};
     GLfloat spotLight [ ] ={0.0,0.0,1.0,0.7};
     GLfloat angulo =20.0;
-    
+
     float pos[]={10,20,20};
     glEnable(GL_LIGHTING);
     
@@ -172,7 +172,7 @@ void initLight(){
     glPolygonMode(GL_FRONT, GL_FILL);
     glEnable(GL_DEPTH_TEST);
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
-    
+
     glLightfv(GL_LIGHT0, GL_AMBIENT, whitePlasticAmb);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, whitePlasticDif);
     glLightfv(GL_LIGHT0, GL_SPECULAR, whitePlasticSpec);
@@ -180,10 +180,10 @@ void initLight(){
     glEnable(GL_LIGHT0);
     
     //glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spotLight);
-    /*
-     glLightfv(GL_LIGHT1, GL_POSITION, obsPfin);
-     glEnable(GL_LIGHT1);*/
-    
+
+    glLightfv(GL_LIGHT1, GL_POSITION, obsPfin);
+    glEnable(GL_LIGHT1);
+
     glFrontFace(GL_CCW);
     glShadeModel(GL_SMOOTH);
     
@@ -460,7 +460,7 @@ void drawChao(){
     glMaterialfv (GL_FRONT, GL_DIFFUSE, greenRubberDif);
     glMaterialfv (GL_FRONT, GL_SPECULAR, greenRubberSpec);
     glMaterialfv (GL_FRONT, GL_SHININESS, &coef_shy);
-    
+
     glPushMatrix();
     
     glColor4f(LARANJA);
@@ -674,7 +674,7 @@ void keyboard(unsigned char key, int x, int y){
             obsPini[1] += 2;
             updateVisaoSubida();
             break;
-        case 108:
+        case 108: // L
             if(luzLigada){
                 luzLigada=false;
                 glDisable(GL_LIGHT0);
@@ -686,12 +686,12 @@ void keyboard(unsigned char key, int x, int y){
             glutPostRedisplay();
             break;
             
-        case 120:
+        case 120: // X
             obsPini[1] -= 2;
             updateVisaoSubida();
             break;
             
-        case 105:
+        case 105: // I
             if(luzBola){
                 luzBola=false;
                 glDisable(GL_LIGHT1);

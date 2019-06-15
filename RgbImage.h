@@ -151,7 +151,8 @@ inline void RgbImage::Reset()
 {
 	NumRows = 0;
 	NumCols = 0;
-	delete[] ImagePtr;
+
+    delete[] ImagePtr;
 	ImagePtr = 0;
 	ErrorCode = 0;
 }

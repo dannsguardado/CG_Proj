@@ -51,6 +51,7 @@ GLfloat whitePlasticSpec []={ 0.870 ,0.870 ,0.870 };
 GLint whitePlasticCoef = 0.25 *128;
 RgbImage imag;
 
+
 static GLfloat verticesEscadas[]={
     5, 0, 0,
     -5, 0, 0,
@@ -252,7 +253,7 @@ void retrocede(int value){
 void teclasNotAscii(int key, int x, int y)
 {
     GLint value = PI/2;
-    
+
     if(cos(aVisao)<=cos(3*PI/4) && cos(aVisao)<=cos(5*PI/4) && sin(aVisao)<=sin(3*PI/4) && sin(aVisao)>= sin(5*PI/4)){
         if(key == GLUT_KEY_UP){
             key = GLUT_KEY_RIGHT;
@@ -307,6 +308,40 @@ void teclasNotAscii(int key, int x, int y)
     if(key == GLUT_KEY_RIGHT){
         direita(value);
     }
+}
+
+void drawFloor(){
+    
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    glDisable(GL_DEPTH_TEST);
+    
+    //................................................................................................
+    glEnable(GL_STENCIL_TEST);
+    glColorMask(0, 0, 0, 0);
+    glClear(GL_STENCIL_BUFFER_BIT);
+    glStencilMask(0xFF);
+    //....................................................................................................
+    glStencilFunc(GL_ALWAYS, 1, 1);
+    glStencilOpSeparate(GL_FRONT, GL_REPLACE, GL_REPLACE, GL_REPLACE); // substitui por ref=1    //desenha chao
+    canvas.drawFloor();
+    
+    glColorMask( 1, 1, 1, 1); glEnable(GL_DEPTH_TEST); glClear(GL_DEPTH_BUFFER_BIT);
+    // Escrever colorBuffer // Enable Zbuffer
+    // Garantir apaga zbuffer
+    //----------------------------------------------
+    glStencilFunc(GL_EQUAL, 1, 1); // Desenha so na zona do StencilBuff
+    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP); // Stencil fica igual !
+
+    glPushMatrix();
+        glScalef(1.0, -1.0, 1.0);
+        canvas.drawSkybox(skybox);
+        canvas.drawBall(obsPfin);
+        canvas.drawEscada(texture, poligono, facesESC, numDegraus, lancesESC);
+    glPopMatrix();
+    
+    glDisable(GL_STENCIL_TEST);
+
+
 }
 
 void initializeRandomVariables(){
@@ -364,10 +399,18 @@ void display(void){
     glLoadIdentity();
     gluLookAt(obsPini[0], obsPini[1]+5.5, obsPini[2], obsPfin[0], obsPfin[1], obsPfin[2], 0, 1, 0);
     
+    drawFloor();
+    
     canvas.drawSkybox(skybox);
     canvas.drawBall(obsPfin);
-    canvas.drawEscada(texture, poligono, facesESC, numDegraus);
+    canvas.drawEscada(texture, poligono, facesESC, numDegraus, lancesESC);
     
+    //mistura cor do chao com o reflexo
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(0.7, 0.7, 0.7, 0.40);  /* 40% dark red floor color */
+    canvas.drawFloor();
+    glDisable(GL_BLEND);
     glutSwapBuffers();
     
 }

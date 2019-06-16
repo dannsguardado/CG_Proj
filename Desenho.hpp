@@ -22,7 +22,9 @@ class Desenho{
 public:
     void drawSkybox(Skybox skybox);
     void drawBall(GLfloat obsPfin[]);
-    void drawEscada(Texturas texture, GLuint poligono[],int facesEsc, GLint numDegraus[]);
+    void drawEscada(Texturas texture, GLuint poligono[],int facesEsc, GLint numDegraus[], int lancesESC);
+    void drawFloor();
+   // void drawColunas(int top);
 };
 
 #endif /* Teclado_hpp */

@@ -20,10 +20,10 @@ void Desenho::drawSkybox(Skybox skybox){
     glColor3f(1.0,1.0,1.0);
     
     glBegin(GL_POLYGON);//back
-    glTexCoord2f(1.0f,0.0f);  glVertex3f(200, 0, 0);
-    glTexCoord2f(0.0f,0.0f);  glVertex3f(-200, 0, 0);
-    glTexCoord2f(0.0f,1.0f);  glVertex3f(-200, 200, 0);
-    glTexCoord2f(1.0f,1.0f);  glVertex3f(200, 200, 0);
+    glTexCoord2f(1.0f,0.0f);  glVertex3f(150, 0, 0);
+    glTexCoord2f(0.0f,0.0f);  glVertex3f(-150, 0, 0);
+    glTexCoord2f(0.0f,1.0f);  glVertex3f(-150, 200, 0);
+    glTexCoord2f(1.0f,1.0f);  glVertex3f(150, 200, 0);
     glEnd();
     
     glDisable(GL_TEXTURE_2D);
@@ -31,10 +31,10 @@ void Desenho::drawSkybox(Skybox skybox){
     glBindTexture(GL_TEXTURE_2D,skybox.skyboxFace[2]);
     
     glBegin(GL_POLYGON);//top
-    glTexCoord2f(0.0f,0.0f);glVertex3f(200, 200, 0);
-    glTexCoord2f(1.0f,0.0f);glVertex3f(-200, 200, 0);
-    glTexCoord2f(1.0,1.0f);glVertex3f(-200, 200, -200);
-    glTexCoord2f(0.0,1.0);glVertex3f(200, 200, -200);
+    glTexCoord2f(0.0f,0.0f);glVertex3f(150, 200, 0);
+    glTexCoord2f(1.0f,0.0f);glVertex3f(-150, 200, 0);
+    glTexCoord2f(1.0,1.0f);glVertex3f(-150, 200, -150);
+    glTexCoord2f(0.0,1.0);glVertex3f(150, 200, -150);
     glEnd();
     
     glDisable(GL_TEXTURE_2D);
@@ -42,10 +42,10 @@ void Desenho::drawSkybox(Skybox skybox){
     glBindTexture(GL_TEXTURE_2D,skybox.skyboxFace[3]);
     
     glBegin(GL_POLYGON);
-    glTexCoord2f(0.0f,0.0f);  glVertex3f(-200, 0, -200);
-    glTexCoord2f(1.0f,0.0f);  glVertex3f(-200, 0, 0);
-    glTexCoord2f(1.0f,1.0f);  glVertex3f(-200, 200, 0);
-    glTexCoord2f(0.0f,1.0f);  glVertex3f(-200, 200, -200);
+    glTexCoord2f(0.0f,0.0f);  glVertex3f(-150, 0, -150);
+    glTexCoord2f(1.0f,0.0f);  glVertex3f(-150, 0, 0);
+    glTexCoord2f(1.0f,1.0f);  glVertex3f(-150, 200, 0);
+    glTexCoord2f(0.0f,1.0f);  glVertex3f(-150, 200, -150);
     glEnd();
     
     glDisable(GL_TEXTURE_2D);
@@ -53,36 +53,38 @@ void Desenho::drawSkybox(Skybox skybox){
     glBindTexture(GL_TEXTURE_2D,skybox.skyboxFace[1]);
     
     glBegin(GL_POLYGON);
-    glTexCoord2f(1.0f,0.0f);glVertex3f(200, 0, -200);
-    glTexCoord2f(0.0f,0.0f);glVertex3f(200, 0, 0);
-    glTexCoord2f(0.0f,1.0f);glVertex3f(200, 200, 0);
-    glTexCoord2f(1.0f,1.0f);glVertex3f(200, 200, -200);
+    glTexCoord2f(1.0f,0.0f);glVertex3f(150, 0, -150);
+    glTexCoord2f(0.0f,0.0f);glVertex3f(150, 0, 0);
+    glTexCoord2f(0.0f,1.0f);glVertex3f(150, 200, 0);
+    glTexCoord2f(1.0f,1.0f);glVertex3f(150, 200, -150);
     glEnd();
     
     glDisable(GL_TEXTURE_2D);
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D,skybox.skyboxFace[6]);
     
-    glBegin(GL_POLYGON);
-    glTexCoord2f(0.0f,0.0f);glVertex3f(200, 0, 0);
-    glTexCoord2f(0.0f,1.0f);glVertex3f(-200, 0, 0);
-    glTexCoord2f(1.0f,1.0f);glVertex3f(-200, 0, -200);
-    glTexCoord2f(1.0f,0.0f);glVertex3f(200, 0, -200);
-    glEnd();
+   /* glBegin(GL_POLYGON);
+    glTexCoord2f(0.0f,0.0f);glVertex3f(150, 0, 0);
+    glTexCoord2f(0.0f,1.0f);glVertex3f(-150, 0, 0);
+    glTexCoord2f(1.0f,1.0f);glVertex3f(-150, 0, -150);
+    glTexCoord2f(1.0f,0.0f);glVertex3f(150, 0, -150);
+    glEnd();*/
     
     glDisable(GL_TEXTURE_2D);
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D,skybox.skyboxFace[5]);
     
     glBegin(GL_POLYGON);
-    glTexCoord2f(1.0f,0.0f);  glVertex3f(200, 0, -200);
-    glTexCoord2f(0.0f,0.0f);  glVertex3f(-200, 0, -200);
-    glTexCoord2f(0.0f,1.0f);  glVertex3f(-200, 200, -200);
-    glTexCoord2f(1.0f,1.0f);  glVertex3f(200, 200, -200);
+    glTexCoord2f(1.0f,0.0f);  glVertex3f(150, 0, -150);
+    glTexCoord2f(0.0f,0.0f);  glVertex3f(-150, 0, -150);
+    glTexCoord2f(0.0f,1.0f);  glVertex3f(-150, 200, -150);
+    glTexCoord2f(1.0f,1.0f);  glVertex3f(150, 200, -150);
     glEnd();
     glDisable(GL_TEXTURE_2D);
     
     glPopMatrix();
+    glFlush();
+
 }
 
 void Desenho::drawBall(GLfloat obsPfin[])
@@ -99,7 +101,7 @@ void Desenho::drawBall(GLfloat obsPfin[])
     glMaterialfv (GL_FRONT, GL_AMBIENT, whitePlasticAmb);
     glMaterialfv (GL_FRONT, GL_DIFFUSE, whitePlasticDif);
     glMaterialfv (GL_FRONT, GL_SPECULAR, whitePlasticSpec);
-    glMaterialf (GL_FRONT, GL_SHININESS, mat_shine);
+    glMaterialf (GL_FRONT_AND_BACK, GL_SHININESS, mat_shine);
     glMaterialfv(GL_FRONT, GL_EMISSION, no_mat);
     
     glPushMatrix();
@@ -109,20 +111,17 @@ void Desenho::drawBall(GLfloat obsPfin[])
     
     glutSolidSphere(2, 10, 10);
     glPopMatrix();
-    
     glFlush();
-    
-    
 }
 
 
-void Desenho::drawEscada(Texturas texture,GLuint poligono[],int facesESC, GLint numDegraus[])
+void Desenho::drawEscada(Texturas texture,GLuint poligono[],int facesESC, GLint numDegraus[], int lancesESC)
 {
     glPushMatrix();
     glTranslatef ( 1, 0, 1);
     glEnable(GL_TEXTURE_2D);
     glDisableClientState(GL_COLOR_ARRAY);
-    for(int k=0 ; k<1; k++){
+    for(int k=0 ; k<lancesESC; k++){
         for(int j=0; j<numDegraus[k]; j++){//j<num_degraus[k]
             for( int p = 0; p < facesESC; p++ ){
                 if (p == 1)
@@ -139,12 +138,9 @@ void Desenho::drawEscada(Texturas texture,GLuint poligono[],int facesESC, GLint 
                 poligono[3]= p*4+3 ;
                 glDrawElements(GL_POLYGON, 4, GL_UNSIGNED_INT, poligono);
             }
-            //parede
-            
             glDrawElements(GL_POLYGON, 4, GL_UNSIGNED_INT, poligono);
-            
+
             glTranslatef ( 0, 2, -5);
-            
         }
         glBindTexture(GL_TEXTURE_2D,texture.texturasT[2]);
         poligono[0]= 4*4+0;
@@ -154,8 +150,9 @@ void Desenho::drawEscada(Texturas texture,GLuint poligono[],int facesESC, GLint 
         glDrawElements(GL_POLYGON, 4, GL_UNSIGNED_INT, poligono);
         
         glTranslatef(-5, 0,0);
+
         glRotatef(90, 0, 1, 0);
-        for(int j=0; j<7; j++){//j<num_degraus[k]
+        for(int j=0; j<numDegraus[k]; j++){//j<num_degraus[k]
             for( int p = 0; p < facesESC; p++ ){
                 if (p == 1)
                     glBindTexture(GL_TEXTURE_2D,texture.texturasT[2]);
@@ -192,5 +189,34 @@ void Desenho::drawEscada(Texturas texture,GLuint poligono[],int facesESC, GLint 
     }
     glDisable(GL_TEXTURE_2D);
     glPopMatrix();
-    
+    glFlush();
+
 }
+
+void Desenho::drawFloor(){
+    glPushMatrix();
+    glBegin(GL_POLYGON);
+    glTexCoord2f(0.0f,0.0f);glVertex3f(150, 0, 150);
+    glTexCoord2f(0.0f,1.0f);glVertex3f(-150, 0, 150);
+    glTexCoord2f(1.0f,1.0f);glVertex3f(-150, 0, -150);
+    glTexCoord2f(1.0f,0.0f);glVertex3f(150, 0, -150);
+    glEnd();
+    glPopMatrix();
+}
+
+/*
+void Desenho::drawColunas(int top){
+    GLUquadric* qobj;
+
+    qobj = gluNewQuadric();
+    glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+    gluQuadricNormals(qobj, GLU_SMOOTH);
+    gluCylinder(qobj,1, 1, top, 20, 20);
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+
+}
+*/
+
+
+
+

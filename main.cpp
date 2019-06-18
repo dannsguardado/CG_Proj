@@ -4,10 +4,12 @@
 #include "Texturas.hpp"
 #include "Skybox.hpp"
 #include "Desenho.hpp"
+#include "Fire.hpp"
 
 Skybox skybox;
 Texturas texture;
 Desenho canvas;
+Fire fire;
 
 //================================================================================
 
@@ -42,15 +44,29 @@ GLfloat Noemit[] = {0.0, 0.0, 0.0, 1.0};
 // Posiçao e direcçao
 GLfloat qaLightPosition[]    = {0, 0, 0, 1};
 GLfloat qaLightDirection[]    = {0, 0, 1, 0};
-GLfloat dirVector0[]={ 0.0, 1.0, -1.0, 1.0};
-
+GLfloat dirVector0[]={ 0.0, 0.50, -0.5, 1.0};
 
 GLfloat whitePlasticAmb []={ 0.8 ,0.8 ,0.8 };
 GLfloat whitePlasticDif []={   0.55 ,0.55 ,0.55 };
 GLfloat whitePlasticSpec []={ 0.870 ,0.870 ,0.870 };
 GLint whitePlasticCoef = 0.25 *128;
-RgbImage imag;
 
+GLfloat whiteDif[] = { 0.75 ,0.75 ,0.75 };
+
+RgbImage imag;
+GLboolean fog = false;
+GLboolean showFire = false;
+
+
+typedef struct {
+    float   size;		// tamanho
+    float	life;		// vida
+    float	fade;		// fade
+    GLfloat x, y, z;    // posicao
+    GLfloat vx, vy, vz; // velocidade
+} Particle;
+
+Particle  particula1[MAX_PARTICULAS];
 
 static GLfloat verticesEscadas[]={
     5, 0, 0,
@@ -162,8 +178,10 @@ GLvoid resize(GLsizei width, GLsizei height)
     glutPostRedisplay();
 }
 
+const GLfloat gravity = -9.8;
+GLfloat velocity = 0;
+
 void updateVisao(int caso ){
-    
     if(caso==1){
         obsPini[0]=obsPfin[0]+rVisao*cos(aVisao);
         obsPini[2]=obsPfin[2]+rVisao*sin(aVisao);
@@ -174,6 +192,27 @@ void updateVisao(int caso ){
 void updateVisaoSubida(){
     obsPfin[1] = obsPini[1];
     glutPostRedisplay();
+}
+
+bool collision(){
+    return false;
+}
+
+void timer(GLint t=1)
+{
+    GLfloat calc=obsPfin[1] + velocity * t/1000;
+    if(calc >0){
+        velocity += gravity * t/1000;
+        obsPfin[1] += velocity * t/1000;
+        obsPini[1] += velocity * t/1000;
+        
+    }
+    if(showFire){
+        fire.updateParticle(fire.particles);
+    }
+    glutPostRedisplay();
+    glutTimerFunc(100, timer, 1);
+
 }
 
 void keyboard(unsigned char key, int x, int y){
@@ -207,7 +246,6 @@ void keyboard(unsigned char key, int x, int y){
                 obsPini[1] -= 2;
                 updateVisaoSubida();
             }
-
             break;
             
         case 105:
@@ -221,11 +259,19 @@ void keyboard(unsigned char key, int x, int y){
             }
             glutPostRedisplay();
             break;
-            //--------------------------- Escape
+        case 102:
+            fog = !fog;
+            if(fog)glEnable(GL_FOG);
+            else glDisable(GL_FOG);
+            break;
+        case 'z':
+            showFire=!showFire;
+            if(showFire) fire.initParticle(fire.particles);
+            break;
+                  //--------------------------- Escape
         case 27:
             exit(0);
             break;
-            
     }
 }
 
@@ -323,7 +369,7 @@ void drawFloor(){
     glColorMask(0, 0, 0, 0);
     glClear(GL_STENCIL_BUFFER_BIT);
     glStencilMask(0xFF);
-    //....................................................................................................
+    //......................		..............................................................................
     glStencilFunc(GL_ALWAYS, 1, 1);
     glStencilOp( GL_REPLACE, GL_REPLACE, GL_REPLACE); // substitui por ref=1    //desenha chao
     canvas.drawFloor();
@@ -338,19 +384,22 @@ void drawFloor(){
     glStencilFunc(GL_EQUAL, 1, 1); // Desenha so na zona do StencilBuff
     glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP); // Stencil fica igual !
     glFrontFace(GL_CW);
-    
+
     glPushMatrix();
-    glScalef(1.0, -1.0, 1.0);
-    canvas.drawSkybox(skybox);
-    canvas.drawBall(obsPfin);
-    canvas.drawEscada(texture, poligono, facesESC, numDegraus, lancesESC);
+        glScalef(1.0, -1.0, 1.0);
+    if(showFire){
+        fire.showParticle(fire.particles);
+    }
+        canvas.drawSkybox(skybox);
+        canvas.drawBall(obsPfin);
+        canvas.drawEscada(texture, poligono, facesESC, numDegraus, lancesESC);
     glPopMatrix();
     glFrontFace(GL_CCW);
-    
+
     glDisable(GL_STENCIL_TEST);
     
     glEnable(GL_BLEND);
-    
+
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor4f(0.7, 0.7, 0.7, 0.40);  /* 40% dark red floor color */
     canvas.drawFloor();
@@ -366,11 +415,11 @@ void initializeRandomVariables(){
 
 void initLight(){
     GLfloat corDifusa [ ] ={0.0,0.4,1.0,0.0};
-    GLfloat ambientLight[] = {0.2f, 0.2f, 0.2f, 1.0f};
+    GLfloat ambientLight[] = {0.2f, 0.2f, 0.2f, 0.6f};
     GLfloat spotLight [ ] ={0.0,0.0,1.0,0.7};
-    GLfloat angulo =15.0;
+    GLfloat angulo =20.0;
     
-    float pos[]={10,20,20};
+    GLfloat pos[]={10,20,20};
     glEnable(GL_LIGHTING);
     
     glEnable(GL_DEPTH_TEST);
@@ -383,7 +432,6 @@ void initLight(){
     glLightfv(GL_LIGHT0, GL_SPECULAR, whitePlasticSpec);
     glLightfv(GL_LIGHT0, GL_POSITION, pos);
     glEnable(GL_LIGHT0);
-    
     
     //Luz pontual
     glLightfv(GL_LIGHT1, GL_AMBIENT, qaAmbientLight);
@@ -399,7 +447,6 @@ void initLight(){
     glEnable(GL_LIGHT1);
     glFrontFace(GL_CCW);
     glShadeModel(GL_SMOOTH);
-    
 }
 
 void display(void){
@@ -411,15 +458,16 @@ void display(void){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(obsPini[0], obsPini[1]+5.5, obsPini[2], obsPfin[0], obsPfin[1], obsPfin[2], 0, 1, 0);
-    
-    gluLookAt(obsPini[0], obsPini[1]+5.5, obsPini[2], obsPfin[0], obsPfin[1], obsPfin[2], 0, 1, 0);
     //mistura cor do chao com o reflexo
     drawFloor();
-    
+
+
     canvas.drawSkybox(skybox);
     canvas.drawBall(obsPfin);
     canvas.drawEscada(texture, poligono, facesESC, numDegraus, lancesESC);
-    
+    if(showFire){
+        fire.showParticle(fire.particles);
+    }
     glutSwapBuffers();
 }
 
@@ -445,7 +493,8 @@ void init(void) {
     glEnable (GL_LIGHTING);
     glEnable(GL_NORMALIZE);
     initLight();
-    
+    fire.initParticle(fire.particles);
+    timer();
 }
 
 //======================================================= MAIN
